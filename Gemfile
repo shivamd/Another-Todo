@@ -14,12 +14,12 @@ gem 'devise'
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 group :development, :test do
+  gem 'minitest'
   gem 'debugger'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'faker'
-  gem 'minitest'
 end
 
 # Use ActiveModel has_secure_password
