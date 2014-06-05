@@ -35,5 +35,18 @@ module Api
         @task.reload.completed.should == true
       end
     end
+
+    describe "#destroy" do
+      before do
+        @task = FactoryGirl.create(:task)
+        @user.tasks << @task
+      end
+
+      it "should destroy the task" do
+        delete :destroy, id: @task.id
+        response.should be_success
+        @user.tasks.count.should == 0
+      end
+    end
   end
 end

@@ -16,6 +16,11 @@ module Api
       render json: task, status: 204
     end
 
+    def destroy
+      task.destroy
+      render nothing: true, status: 204
+    end
+
     private
 
     def task
