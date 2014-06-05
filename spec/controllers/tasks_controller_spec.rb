@@ -23,5 +23,17 @@ module Api
         response.body.should == @user.tasks.to_json
       end
     end
+
+    describe "#update" do
+      before do
+        @task = FactoryGirl.create(:task)
+        @user.tasks << @task
+      end
+      it "should update the task" do
+        put :update, id: @task.id, task: {completed: true}, format: :json
+        response.should be_success
+        @task.reload.completed.should == true
+      end
+    end
   end
 end

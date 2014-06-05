@@ -11,7 +11,16 @@ module Api
       render json: task, status: 201
     end
 
+    def update
+      task.update_attributes(task_params)
+      render json: task, status: 204
+    end
+
     private
+
+    def task
+      @task ||= current_user.tasks.find(params[:id])
+    end
 
     def task_params
       params.require(:task).permit(:name, :completed, :due_date)
