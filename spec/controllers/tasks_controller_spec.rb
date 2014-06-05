@@ -3,6 +3,8 @@ module Api
   describe TasksController do
     before :each do
       @user = FactoryGirl.create(:user)
+      @task = FactoryGirl.create(:task)
+      @user.tasks << @task
       controller.stub current_user: @user
       controller.stub authenticate_user!: true
     end
@@ -16,8 +18,6 @@ module Api
 
     describe "#index" do
       it "should be able to view all tasks" do
-        task = FactoryGirl.create(:task)
-        @user.tasks << task
         get :index
         response.should be_success
         response.body.should == @user.tasks.to_json
@@ -25,10 +25,6 @@ module Api
     end
 
     describe "#update" do
-      before do
-        @task = FactoryGirl.create(:task)
-        @user.tasks << @task
-      end
       it "should update the task" do
         put :update, id: @task.id, task: {completed: true}, format: :json
         response.should be_success
@@ -37,11 +33,6 @@ module Api
     end
 
     describe "#destroy" do
-      before do
-        @task = FactoryGirl.create(:task)
-        @user.tasks << @task
-      end
-
       it "should destroy the task" do
         delete :destroy, id: @task.id
         response.should be_success
