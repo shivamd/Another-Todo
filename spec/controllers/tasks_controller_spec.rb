@@ -1,16 +1,26 @@
 require 'spec_helper'
 module Api
   describe TasksController do
+    before :each do
+      @user = FactoryGirl.create(:user)
+      controller.stub current_user: @user
+      controller.stub authenticate_user!: true
+    end
     describe "#create" do
-      before do
-        @user = FactoryGirl.create(:user)
-        controller.stub current_user: @user
-        controller.stub authenticate_user!: true
-      end
       it "should be able to create a new record" do
         post :create, task: {name: "New task"}, format: :json
         response.should be_success
         response.body.should == Task.last.to_json
+      end
+    end
+
+    describe "#index" do
+      it "should be able to view all tasks" do
+        task = FactoryGirl.create(:task)
+        @user.tasks << task
+        get :index
+        response.should be_success
+        response.body.should == @user.tasks.to_json
       end
     end
   end
