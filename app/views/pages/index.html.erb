@@ -1,1 +1,20 @@
 <h2>Another Todo</h2>
+<div id="tasks-container" ng-controller="TaskCtrl">
+  <span>{{remaining()}} remaining</span>
+  <ul class="tasks">
+    <li ng-repeat="task in tasks">
+      <input type="checkbox" ng-click="updateStatus(task)"ng-model="task.completed"/>
+      <span ng-hide="task.editing" ng-dblclick="editTask(task)" class="completed-{{task.completed}}">
+        {{task.name}}
+      </span>
+      <input name="name" type="text" ng-show="task.editing" ng-model="task.name" ng-blur="doneEditing(task)" autofocus/>
+      <button ng-click="deleteTask($index)">Remove</button>
+    </li>
+  </ul>
+  <form novalidate ng-submit="addTask()" name="taskForm">
+    <input type="text" name="name" ng-model="taskName" size="30" placeholder="" required/>
+    <span class="error" ng-show="taskForm.name.$invalid && !taskForm.name.$pristine">
+      Required!</span><br>
+    <input ng-disabled="taskForm.$invalid" type="submit" value="add" />
+  </form>
+</div>
